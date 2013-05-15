@@ -1,5 +1,5 @@
 = Multi-PHP =
-Run multiple versions of PHP on the same Apache instance on slackware.
+Run multiple versions of PHP on the same Apache instance on Slackware.
 
 A couple of SlackBuild scripts to run multiple versions of PHP on the same
 Apache instance on Slackware.  Currently only PHP 5.3 is supported.
