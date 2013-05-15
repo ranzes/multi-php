@@ -47,7 +47,7 @@ NUMJOBS=${NUMJOBS:-" -j7 "}
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp}
-PKG=$TMP/package-php/
+PKG=$TMP/package-php53/
 rm -rf $PKG
 mkdir -p $TMP $PKG
 
@@ -86,6 +86,7 @@ else
 fi
 
 mkdir -p $PKG/etc/httpd
+# TODO: /php53?
 mkdir -p $PKG/etc/php
 # A trick from DaMouse to enable building php into $PKG.
 # We'll remove this later on.
@@ -263,6 +264,8 @@ chmod 755 $PKG/usr/bin/pear
    -exec chmod 644 {} \;
 )
 
+# TODO: should this be php53-... too?  Version is already in the dir itself.
+#       Probably good to keep in sync with pkg name though
 mkdir -p $PKG/usr/doc/php-$VERSION
 cp -a \
   CODING_STANDARDS CREDITS EXTENSIONS INSTALL LICENSE NEWS README* TODO* UPGRADING* \
