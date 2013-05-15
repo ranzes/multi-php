@@ -200,7 +200,6 @@ CFLAGS="$SLKCFLAGS" \
   --with-pdo-sqlite=shared,/usr \
   --with-pspell=shared,/usr \
   --with-enchant=shared,/usr \
-  --with-mm=/usr \
   --enable-shmop=shared \
   --with-snmp=shared,/usr \
   --enable-soap=shared \
@@ -228,6 +227,11 @@ CFLAGS="$SLKCFLAGS" \
 #
 # I would recommend *against* and will take no responbility for turning on
 # "safe" mode.
+
+# PHP doesn't compile anymore with mm enabled on Slack 14 (complains about mm
+# not being thread safe) and Slack 14's buildscript for PHP (5.4) has this
+# removed too so it's probably safe...  -- sevens
+#  --with-mm=/usr
 
 # Make the Apache2 module version of PHP:
 php_configure \
