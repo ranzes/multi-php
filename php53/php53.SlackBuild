@@ -142,9 +142,13 @@ zcat $CWD/php.session.save_path.diff.gz | patch -p1 --verbose || exit 1
 #     first...).  Was: /usr
 #     NOTE: did a s/\/usr/\/opt\/php53/ on --libdir too just to be sure, same
 #           for $EXTENSION_DIR
+#     NOTE: same modification is applied to commands with hard-coded paths
+#           below
 #   * Added a '53' suffix to all binaries so they're distinguishable from
 #     Slackware's (esp. when both are in $PATH) and make them usable side by
 #     side.
+#     NOTE: same modification is applied to commands with hard-coded paths
+#           below
 php_configure() {
 EXTENSION_DIR=/opt/php53/lib${LIBDIRSUFFIX}/php/extensions \
 CFLAGS="$SLKCFLAGS" \
@@ -255,14 +259,17 @@ php_configure \
   --enable-pcntl \
   --enable-sigchild
 make $NUMJOBS || make || exit 1
-mkdir -p $PKG/usr/bin
-cat ./sapi/cli/php > $PKG/usr/bin/php
-cat ./sapi/cgi/php-cgi > $PKG/usr/bin/php-cgi
-chmod 755 $PKG/usr/bin/php
-chmod 755 $PKG/usr/bin/php-cgi
+# Installing in /opt (for now)  --sevens
+mkdir -p $PKG/opt/php53/bin
+# NOTE: why?  already in there...  (inherited from Slackware's script)
+cat ./sapi/cli/php > $PKG/opt/php53/bin/php53
+cat ./sapi/cgi/php-cgi > $PKG/opt/php53/bin/php-cgi53
+chmod 755 $PKG/opt/php53/bin/php53
+chmod 755 $PKG/opt/php53/bin/php-cgi53
 
 # PHP (used to) install Pear with some strange permissions.
-chmod 755 $PKG/usr/bin/pear
+# TODO: why no suffix??
+chmod 755 $PKG/opt/php53/bin/pear
 
 # PHP sometimes puts junk in the root directory:
 ( cd $PKG
@@ -270,7 +277,7 @@ chmod 755 $PKG/usr/bin/pear
 )
 
 # Fix $PKG/usr/lib/php perms:
-( cd $PKG/usr/lib${LIBDIRSUFFIX}/php
+( cd $PKG/opt/php53/lib${LIBDIRSUFFIX}/php
   find . \
    \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
    -exec chmod 755 {} \; -o \
@@ -307,7 +314,7 @@ chown root:apache $PKG/var/lib/php
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
 
-gzip -9 $PKG/usr/man/man?/*.?
+gzip -9 $PKG/opt/php53/man/man?/*.?
 
 mkdir -p $PKG/install
 zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
