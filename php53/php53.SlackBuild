@@ -135,14 +135,20 @@ zcat $CWD/php.ini-development.diff.gz | patch -p1 --verbose php.ini-production |
 zcat $CWD/php.session.save_path.diff.gz | patch -p1 --verbose || exit 1
 
 # Generic "kitchen sink" configure function, with as many things as possible (and
-# maybe then some ;-) compiled as shared extensions:
+# maybe then some ;-) compiled as shared extensions.
+#
+# Some notable differences from Slackware's original build script (-- sevens):
+#   * Isolate the installation into /opt/php53 (for now, get it working
+#     first...).  Was: /usr
+#     NOTE: did a s/\/usr/\/opt\/php53/ on --libdir too just to be sure, same
+#           for $EXTENSION_DIR
 php_configure() {
-EXTENSION_DIR=/usr/lib${LIBDIRSUFFIX}/php/extensions \
+EXTENSION_DIR=/opt/php53/lib${LIBDIRSUFFIX}/php/extensions \
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   $* \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --prefix=/opt/php53 \
+  --libdir=/opt/php53/lib${LIBDIRSUFFIX} \
   --with-libdir=lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --disable-safe-mode \
