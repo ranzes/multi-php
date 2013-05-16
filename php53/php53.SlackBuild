@@ -130,9 +130,9 @@ find . -name "*.h" -exec chmod 644 {} \;
 find . -name "*.orig" -exec rm {} \;
 
 # Patch ini files:
-zcat $CWD/php.ini-development.diff.gz | patch -p1 --verbose || exit 1
-zcat $CWD/php.ini-development.diff.gz | patch -p1 --verbose php.ini-production || exit 1
-zcat $CWD/php.session.save_path.diff.gz | patch -p1 --verbose || exit 1
+cat $CWD/php.ini-development.diff | patch -p1 --verbose || exit 1
+cat $CWD/php.ini-development.diff | patch -p1 --verbose php.ini-production || exit 1
+cat $CWD/php.session.save_path.diff | patch -p1 --verbose || exit 1
 
 # Generic "kitchen sink" configure function, with as many things as possible (and
 # maybe then some ;-) compiled as shared extensions.
@@ -317,7 +317,7 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 gzip -9 $PKG/opt/php53/man/man?/*.?
 
 mkdir -p $PKG/install
-zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
 #if [ -d "$IMAPLIBDIR" ]; then
