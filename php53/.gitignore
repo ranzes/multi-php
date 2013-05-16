@@ -1,2 +1,2 @@
-# Ignore PHP 5.3.* source file(s), regardless of compression
+# Ignore PHP 5.3.* source file(s), regardless of compression method
 php-5.3.*.tar.*
