@@ -142,6 +142,9 @@ zcat $CWD/php.session.save_path.diff.gz | patch -p1 --verbose || exit 1
 #     first...).  Was: /usr
 #     NOTE: did a s/\/usr/\/opt\/php53/ on --libdir too just to be sure, same
 #           for $EXTENSION_DIR
+#   * Added a '53' suffix to all binaries so they're distinguishable from
+#     Slackware's (esp. when both are in $PATH) and make them usable side by
+#     side.
 php_configure() {
 EXTENSION_DIR=/opt/php53/lib${LIBDIRSUFFIX}/php/extensions \
 CFLAGS="$SLKCFLAGS" \
@@ -150,6 +153,7 @@ CFLAGS="$SLKCFLAGS" \
   --prefix=/opt/php53 \
   --libdir=/opt/php53/lib${LIBDIRSUFFIX} \
   --with-libdir=lib${LIBDIRSUFFIX} \
+  --program-suffix=53 \
   --sysconfdir=/etc \
   --disable-safe-mode \
   --disable-magic-quotes \
