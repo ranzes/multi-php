@@ -87,8 +87,7 @@ fi
 
 # Apache module is disabled for now.  -- sevens
 # mkdir -p $PKG/etc/httpd
-# TODO: /php53?
-mkdir -p $PKG/etc/php
+mkdir -p $PKG/etc/php53
 # A trick from DaMouse to enable building php into $PKG.
 # We'll remove this later on.
 # Apache module is disabled for now.  -- sevens
@@ -151,6 +150,9 @@ cat $CWD/php.session.save_path.diff | patch -p1 --verbose || exit 1
 #     side.
 #     NOTE: same modification is applied to commands with hard-coded paths
 #           below
+#   * Explicitly omitted /etc/php from scandirs, don't want to mix stuff from
+#     different PHP versions.  /etc/php is for Slackware's PHP version,
+#     /etc/php53 for ours.
 php_configure() {
 EXTENSION_DIR=/opt/php53/lib${LIBDIRSUFFIX}/php/extensions \
 CFLAGS="$SLKCFLAGS" \
@@ -166,8 +168,8 @@ CFLAGS="$SLKCFLAGS" \
   --enable-zend-multibyte \
   --enable-mbregex \
   --enable-tokenizer=shared \
-  --with-config-file-scan-dir=/etc/php \
-  --with-config-file-path=/etc/httpd \
+  --with-config-file-scan-dir=/etc/php53 \
+  --with-config-file-path=/etc/php53 \
   --enable-mod_charset \
   --with-layout=PHP \
   --enable-sigchild \
@@ -302,16 +304,17 @@ cp -a \
 chown -R root:root $PKG/usr/doc/php-$VERSION
 chmod 644 $PKG/usr/doc/php-$VERSION/UPGRADING*
 
-mkdir -p $PKG/etc/httpd
-cp -a php.ini-development php.ini-production $PKG/etc/httpd
+mkdir -p $PKG/etc/php53
+cp -a php.ini-development php.ini-production $PKG/etc/php53
 # Apache module is disabled for now.  -- sevens
 # cat $CWD/mod_php.conf.example | sed -e "s#lib/httpd#lib${LIBDIRSUFFIX}/httpd#" \
 #   > $PKG/etc/httpd/mod_php.conf.example
-chmod 644 $PKG/etc/httpd/*
-chown root:root $PKG/etc/httpd/*
+chmod 644 $PKG/etc/php53/*
+chown root:root $PKG/etc/php53/*
 
 # This can go now.
-rm -f $PKG/etc/httpd/httpd*
+# Apache module is disabled for now.  -- sevens
+# rm -f $PKG/etc/httpd/httpd*
 
 # Session directory for PHP:
 mkdir -p $PKG/var/lib/php
