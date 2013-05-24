@@ -248,10 +248,11 @@ CFLAGS="$SLKCFLAGS" \
 #  --with-mm=/usr
 
 # Make the Apache2 module version of PHP:
-php_configure \
-  --with-apxs2=/usr/sbin/apxs
-make $NUMJOBS || make || exit 1
-make install INSTALL_ROOT=$PKG || exit 1
+# Skip this, would conflict with Slackware's, CGI-only (for now).  -- sevens
+# php_configure \
+#   --with-apxs2=/usr/sbin/apxs
+# make $NUMJOBS || make || exit 1
+# make install INSTALL_ROOT=$PKG || exit 1
 
 # Make the CLI/CGI version of PHP:
 make distclean
@@ -259,11 +260,15 @@ php_configure \
   --enable-pcntl \
   --enable-sigchild
 make $NUMJOBS || make || exit 1
+# Added here, skipping Apache atm
+make install INSTALL_ROOT=$PKG || exit 1
 # Installing in /opt (for now)  --sevens
 mkdir -p $PKG/opt/php53/bin
-# NOTE: why?  already in there...  (inherited from Slackware's script)
-cat ./sapi/cli/php > $PKG/opt/php53/bin/php53
-cat ./sapi/cgi/php-cgi > $PKG/opt/php53/bin/php-cgi53
+# NOTE: why?  already in there...  Different version?
+# Disabled for now, 'make install' has been moved to here, should probably take
+# care of it.  -- sevens
+# cat ./sapi/cli/php > $PKG/opt/php53/bin/php53
+# cat ./sapi/cgi/php-cgi > $PKG/opt/php53/bin/php-cgi53
 chmod 755 $PKG/opt/php53/bin/php53
 chmod 755 $PKG/opt/php53/bin/php-cgi53
 
