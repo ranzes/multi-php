@@ -85,16 +85,18 @@ else
   )
 fi
 
-mkdir -p $PKG/etc/httpd
+# Apache module is disabled for now.  -- sevens
+# mkdir -p $PKG/etc/httpd
 # TODO: /php53?
 mkdir -p $PKG/etc/php
 # A trick from DaMouse to enable building php into $PKG.
 # We'll remove this later on.
-cat /etc/httpd/original/httpd.conf > $PKG/etc/httpd/httpd.conf
-if [ ! -e /etc/httpd/original/httpd.conf ]; then
-  echo "FATAL:  no /etc/httpd/original/httpd.conf found."
-  exit 1
-fi
+# Apache module is disabled for now.  -- sevens
+# cat /etc/httpd/original/httpd.conf > $PKG/etc/httpd/httpd.conf
+# if [ ! -e /etc/httpd/original/httpd.conf ]; then
+#   echo "FATAL:  no /etc/httpd/original/httpd.conf found."
+#   exit 1
+# fi
 
 cd $TMP
 rm -rf php-$VERSION
@@ -302,8 +304,9 @@ chmod 644 $PKG/usr/doc/php-$VERSION/UPGRADING*
 
 mkdir -p $PKG/etc/httpd
 cp -a php.ini-development php.ini-production $PKG/etc/httpd
-cat $CWD/mod_php.conf.example | sed -e "s#lib/httpd#lib${LIBDIRSUFFIX}/httpd#" \
-  > $PKG/etc/httpd/mod_php.conf.example
+# Apache module is disabled for now.  -- sevens
+# cat $CWD/mod_php.conf.example | sed -e "s#lib/httpd#lib${LIBDIRSUFFIX}/httpd#" \
+#   > $PKG/etc/httpd/mod_php.conf.example
 chmod 644 $PKG/etc/httpd/*
 chown root:root $PKG/etc/httpd/*
 
