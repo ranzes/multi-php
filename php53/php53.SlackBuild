@@ -264,8 +264,9 @@ php_configure \
   --enable-pcntl \
   --enable-sigchild
 make $NUMJOBS || make || exit 1
-# Added here, skipping Apache atm
-make install INSTALL_ROOT=$PKG || exit 1
+# Added here, skipping Apache atm.  -- sevens
+# 'make install' can fail with multiple jobs, enforce only one here.  -- sevens
+make install INSTALL_ROOT=$PKG PHP_PEAR_SYSCONF_DIR=/etc/php53 -j1 || exit 1
 # Installing in /opt (for now)  --sevens
 mkdir -p $PKG/opt/php53/bin
 # NOTE: why?  already in there...  Different version?
@@ -280,7 +281,15 @@ chmod 755 $PKG/opt/php53/bin/php-cgi53
 # TODO: why no suffix??
 chmod 755 $PKG/opt/php53/bin/pear
 
+# Make pear look for pear.conf in /etc/php53 instead of /etc.  --sevens
+# NOTE: solution taken from Debian Sid (PHP 5.4.4), they have pear.conf located
+#       in /etc/pear/.  Located in debian/rules of the PHP source package.
+# TODO: add line in target file with comment about modification too?
+sed -i -re "s#('PEAR_CONFIG_SYSCONFDIR', PHP_SYSCONFDIR)#\1 . '/php53'#" $PKG/opt/php53/lib${LIBDIRSUFFIX}/php/PEAR/Config.php
+
 # PHP sometimes puts junk in the root directory:
+# WTF?  Got this in /opt/php53/lib64/php on last run (oh, and the whole dirs
+# got created).  -- sevens
 ( cd $PKG
   rm -rf .channels .depdb .depdblock .filemap .lock .registry
 )
@@ -317,6 +326,7 @@ chown root:root $PKG/etc/php53/*
 # rm -f $PKG/etc/httpd/httpd*
 
 # Session directory for PHP:
+# TODO: suffix too?  Probably safer and more clear
 mkdir -p $PKG/var/lib/php
 chmod 770 $PKG/var/lib/php
 chown root:apache $PKG/var/lib/php
