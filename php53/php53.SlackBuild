@@ -277,15 +277,27 @@ mkdir -p $PKG/opt/php53/bin
 chmod 755 $PKG/opt/php53/bin/php53
 chmod 755 $PKG/opt/php53/bin/php-cgi53
 
+# Add file-suffix to those files in bin/ that PHP forgot...  -- sevens
+mv $PKG/opt/php53/bin/pear $PKG/opt/php53/bin/pear53
+mv $PKG/opt/php53/bin/peardev $PKG/opt/php53/bin/peardev53
+mv $PKG/opt/php53/bin/pecl $PKG/opt/php53/bin/pecl53
+mv $PKG/opt/php53/bin/phar $PKG/opt/php53/bin/phar53
+# TODO: fix phar.phar too!  Needs adjusting of the phar symlink's target...
+
 # PHP (used to) install Pear with some strange permissions.
 # TODO: why no suffix??
-chmod 755 $PKG/opt/php53/bin/pear
+chmod 755 $PKG/opt/php53/bin/pear53
 
-# Make pear look for pear.conf in /etc/php53 instead of /etc.  --sevens
+# Make pear look for pear.conf in /etc/php53 instead of /etc.  -- sevens
 # NOTE: solution taken from Debian Sid (PHP 5.4.4), they have pear.conf located
 #       in /etc/pear/.  Located in debian/rules of the PHP source package.
 # TODO: add line in target file with comment about modification too?
 sed -i -re "s#('PEAR_CONFIG_SYSCONFDIR', PHP_SYSCONFDIR)#\1 . '/php53'#" $PKG/opt/php53/lib${LIBDIRSUFFIX}/php/PEAR/Config.php
+
+# Make the scripts in bin/ use php53 as the binary name, not php...  -- sevens
+# NOTE: phar is OK, it already shebangs the proper binary
+sed -i -re "s#(/opt/php53/bin/php)#\153#" $PKG/opt/php53/bin/pear53 $PKG/opt/php53/bin/peardev53 $PKG/opt/php53/bin/pecl53
+sed -i -re "s#(PHP=php)#\153#" $PKG/opt/php53/bin/pear53 $PKG/opt/php53/bin/peardev53 $PKG/opt/php53/bin/pecl53
 
 # PHP sometimes puts junk in the root directory:
 # WTF?  Got this in /opt/php53/lib64/php on last run (oh, and the whole dirs
