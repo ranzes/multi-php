@@ -159,6 +159,10 @@ sed -i "s|build\"$|php/build\"|" scripts/phpize.in
 #   * Explicitly omitted /etc/php from scandirs, don't want to mix stuff from
 #     different PHP versions.  /etc/php is for Slackware's PHP version,
 #     /etc/php53 for ours.
+#   * TODO: find better name for the --with-config-file-scan-dir value.  Can't
+#           be the same as --with-config-file-path, or php.ini gets parsed
+#           twice (resulting at least in warnings about modules being
+#           attempted to be loaded twice)!
 php_configure() {
 EXTENSION_DIR=/opt/php53/lib${LIBDIRSUFFIX}/php/extensions \
 CFLAGS="$SLKCFLAGS" \
@@ -174,7 +178,7 @@ CFLAGS="$SLKCFLAGS" \
   --enable-zend-multibyte \
   --enable-mbregex \
   --enable-tokenizer=shared \
-  --with-config-file-scan-dir=/etc/php53 \
+  --with-config-file-scan-dir=/etc/php53/php \
   --with-config-file-path=/etc/php53 \
   --enable-mod_charset \
   --with-layout=PHP \
@@ -342,6 +346,9 @@ cp -a php.ini-development php.ini-production $PKG/etc/php53
 #   > $PKG/etc/httpd/mod_php.conf.example
 chmod 644 $PKG/etc/php53/*
 chown root:root $PKG/etc/php53/*
+
+# Create base conf dir too
+mkdir -p $PKG/etc/php53/php
 
 # This can go now.
 # Apache module is disabled for now.  -- sevens
