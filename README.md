@@ -29,7 +29,6 @@ Usage
 #
 Include /etc/httpd/extra/cgi-php53.conf
 ```
-
     Note that this will only provide the 'php53-script' handler itself, to
     be used wherever needed.  Any PHP file on your server will still be
     served as before, PHP 5.3 is only used if explicitly enabled.
