@@ -135,6 +135,12 @@ cat $CWD/php.ini-development.diff | patch -p1 --verbose || exit 1
 cat $CWD/php.ini-development.diff | patch -p1 --verbose php.ini-production || exit 1
 cat $CWD/php.session.save_path.diff | patch -p1 --verbose || exit 1
 
+# Install the build folder into /usr/lib$LIBDIRSUFFIX/php/build
+# and adapt phpize accordingly:
+# NOTE: copied from Slackware 14.0's php.SlackBuild (PHP 5.4.x)  -- sevens
+sed -i "s|build$|php/build|" scripts/Makefile.frag
+sed -i "s|build\"$|php/build\"|" scripts/phpize.in
+
 # Generic "kitchen sink" configure function, with as many things as possible (and
 # maybe then some ;-) compiled as shared extensions.
 #
@@ -317,6 +323,10 @@ sed -i -re "s#(PHP=php)#\153#" $PKG/opt/php53/bin/pear53 $PKG/opt/php53/bin/pear
 
 # TODO: should this be php53-... too?  Version is already in the dir itself.
 #       Probably good to keep in sync with pkg name though
+#       Hmm, Slack's db?? pkg's don't have this either (e.g. db42 has
+#       /usr/doc/db-4.2.52).  Original name of the project doesn't change by
+#       the fact that we use a different package name (i.e. it's still PHP,
+#       version 5.3.x, not 'PHP53').
 mkdir -p $PKG/usr/doc/php-$VERSION
 cp -a \
   CODING_STANDARDS CREDITS EXTENSIONS INSTALL LICENSE NEWS README* TODO* UPGRADING* \
