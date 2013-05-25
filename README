@@ -1,4 +1,6 @@
-= Multi-PHP =
+Multi-PHP
+=========
+
 Run multiple versions of PHP on the same Apache instance on Slackware.
 
 A couple of SlackBuild scripts to run multiple versions of PHP on the same
