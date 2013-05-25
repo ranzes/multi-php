@@ -24,7 +24,7 @@ Usage
 *   Enable support for PHP 5.3 on your Apache server by including the
     /etc/httpd/extra/cgi-php53.conf file from your httpd.conf like so:
 
-```apacheconf
+```apache
 # Uncomment the following line to enable PHP 5.3 CGI:
 #
 Include /etc/httpd/extra/cgi-php53.conf
@@ -38,10 +38,12 @@ Include /etc/httpd/extra/cgi-php53.conf
     To use PHP 5.3 for all files a given dir (and all it's subdirs) with an
     extension of '.php', add the following (either to the .htaccess file or
     the appropriate section in httpd.conf itself):
-```javascript
+
+```apache
 # NOTE: this requires mod_mime
 AddHandler php53-script .php
 ```
+
     To revert that behavior on some specific files inside that dir to
     Apache's default PHP handler (i.e. ignore the above for the given
     file(s)), also add:
