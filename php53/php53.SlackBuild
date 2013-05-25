@@ -339,6 +339,12 @@ cp -a \
 chown -R root:root $PKG/usr/doc/php-$VERSION
 chmod 644 $PKG/usr/doc/php-$VERSION/UPGRADING*
 
+# Provide default conf for Apache.  -- sevens
+mkdir -p $PKG/etc/httpd/extra/
+cat $CWD/cgi-php53.conf > $PKG/etc/httpd/extra/cgi-php53.conf
+chmod 644 $PKG/etc/httpd $PKG/etc/httpd/extra
+chown root:root $PKG/etc/httpd $PKG/etc/httpd/extra
+
 mkdir -p $PKG/etc/php53
 cp -a php.ini-development php.ini-production $PKG/etc/php53
 # Apache module is disabled for now.  -- sevens
