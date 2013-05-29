@@ -1,10 +1,10 @@
 Multi-PHP
 =========
-
-Run multiple versions of PHP on the same Apache instance on Slackware.
+Run multiple versions of PHP on one Apache instance on Slackware.
 
 A couple of SlackBuild scripts to run multiple versions of PHP on the same
-Apache instance on Slackware.  Currently only PHP 5.3 is supported.
+Apache instance on Slackware.  Currently only PHP 5.3 is supported but more
+versions will be added in time.
 
 
 Build and install
@@ -14,8 +14,9 @@ Same procedure as using a regular SlackBuild, except for the following:
     to exist in the parent dir from where you're building (i.e. ../), just
     like when building regular PHP from Slackware.  This is required for the
     IMAP support and the build *will* fail without it.
-*   The appropriate PHP source needs to be downloaded separately, a
-    fetch-php.sh script is supplied for your convenience.
+*   The appropriate PHP source needs to be downloaded separately into the
+    directory containing the SlackBuild, a fetch-php.sh script is supplied
+    for your convenience.
 
 
 Usage
@@ -34,17 +35,17 @@ Usage
     served as before, PHP 5.3 is only used if explicitly enabled.
     See the cgi-php53.conf file for more information.
 *   Use PHP 5.3 for each file or directory where it's wanted.
-    To use PHP 5.3 for all files a given dir (and all it's subdirs) with an
-    extension of '.php', add the following (either to the .htaccess file or
-    the appropriate section in httpd.conf itself):
+    To use PHP 5.3 for all files with an extension of '.php' in a given dir
+    (and all its subdirs), add the following (either to the dir's .htaccess
+    (file or the appropriate section in httpd.conf itself):
 
     ```apache
-    # NOTE: this requires mod_mime
+    # NOTE: requires mod_mime
     AddHandler php53-script .php
     ```
-    To revert that behavior on some specific files inside that dir to
-    Apache's default PHP handler (i.e. ignore the above for the given
-    file(s)), also add:
+    Additionally, to revert that behavior on some specific files inside that
+    dir to Apache's default PHP handler (i.e. ignore the above for the given
+    file(s)), use something like:
 
     ```apache
     # Specifically exempt filename.php, use regular mod_php for it
@@ -53,5 +54,5 @@ Usage
     </Files>
     ```
     There are some other methods for using the php53-script handler, see
-    the Apache documentation on handlers for more information.  It should
-    work wherever a handler can be used, if not, please report.
+    the Apache documentation on handlers for more information on that.  It
+    should work wherever a handler can be used, if not, please report.
