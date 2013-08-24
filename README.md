@@ -8,7 +8,7 @@ versions will be added in time.
 
 
 Build and install
-========
+=================
 Same procedure as using a regular SlackBuild, except for the following:
 *   It needs a full copy of the alpine source-dir from Slackware 13.37 (!!)
     to exist in the parent dir from where you're building (i.e. ../), just
