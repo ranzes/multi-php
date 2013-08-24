@@ -40,6 +40,7 @@ Usage
     the appropriate section in httpd.conf itself):
 
     ```apache
+    # Serve '*.php' files with PHP 5.3 in here
     <FilesMatch \.php$>
         SetHandler php53-script
     </FilesMatch>
