@@ -35,13 +35,14 @@ Usage
     served as before, PHP 5.3 is only used if explicitly enabled.
     See the cgi-php53.conf file for more information.
 *   Use PHP 5.3 for each file or directory where it's wanted.
-    To use PHP 5.3 for all files with an extension of '.php' in a given dir
-    (and all its subdirs), add the following (either to the dir's .htaccess
-    (file or the appropriate section in httpd.conf itself):
+    To use PHP 5.3 for all files ending with '.php' in a given dir (and all
+    its subdirs), add the following (either to the dir's .htaccess file or
+    the appropriate section in httpd.conf itself):
 
     ```apache
-    # NOTE: requires mod_mime
-    AddHandler php53-script .php
+    <FilesMatch \.php$>
+        SetHandler php53-script
+    </FilesMatch>
     ```
     Additionally, to revert that behavior on some specific files inside that
     dir to Apache's default PHP handler (i.e. ignore the above for the given
@@ -50,7 +51,11 @@ Usage
     ```apache
     # Specifically exempt filename.php, use regular mod_php for it
     <Files "filename.php">
-        RemoveHandler .php
+        # NOTE: either 'application/x-httpd-php' (used in Slackware's
+        #       mod_php.conf) or 'php5-script' works here, both are provided by
+        #       mod_php.  Using 'php5-script' due to the similar naming-style.
+        #       Named both in this comment as easy grep targets.
+        SetHandler php5-script
     </Files>
     ```
     There are some other methods for using the php53-script handler, see
